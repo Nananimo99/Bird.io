@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 542f0bafa4f3b1342995b569ee3770ac
+  - enabled: 1
+    path: Assets/Scenes/HardMode.unity
+    guid: 77303fbbf0303414f9be3348fba1cc5d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

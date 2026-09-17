@@ -27,6 +27,9 @@ public class Bird : MonoBehaviour
     private bool isAlive = true;
     private float startY;
 
+
+
+  
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
