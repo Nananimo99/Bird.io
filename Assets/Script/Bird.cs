@@ -117,15 +117,6 @@ public class Bird : MonoBehaviour
         Die();
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (!isAlive) return;
-
-        if (showCollisionLog) Debug.Log("BIRD TRIGGER: " + other.gameObject.name);
-
-        if (other.CompareTag("Score")) GameManager.instance.AddScore();
-    }
-
     void Die()
     {
         isAlive = false;

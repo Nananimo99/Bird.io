@@ -15,11 +15,21 @@ public class GameManager : MonoBehaviour
     [Header("State")]
     public bool isPlaying = false;
 
+    [Header("Debug")]
+    public bool showScoreLog = true;
+
     private bool isGameOver;
     private int score;
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("GameManager: duplicate found on " + gameObject.name + ", destroying it.");
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
     }
 
@@ -28,8 +38,12 @@ public class GameManager : MonoBehaviour
         isPlaying = false;
         isGameOver = false;
         score = 0;
+
+        if (scoreText == null) Debug.LogWarning("GameManager: Score Text is not assigned.");
+
         if (readyPanel != null) readyPanel.SetActive(true);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
+
         UpdateScoreText();
     }
 
@@ -48,6 +62,7 @@ public class GameManager : MonoBehaviour
     public void AddScore()
     {
         score++;
+        if (showScoreLog) Debug.Log("SCORE = " + score);
         UpdateScoreText();
     }
 

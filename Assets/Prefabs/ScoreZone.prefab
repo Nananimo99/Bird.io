@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5425646918129255572}
   - component: {fileID: 4171330589519545298}
+  - component: {fileID: 7897311803840011227}
   m_Layer: 0
   m_Name: ScoreZone
   m_TagString: Score
@@ -53,3 +54,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.266325, y: 1, z: 50.214813}
   m_Center: {x: 1.1331625, y: 0, z: -24.607407}
+--- !u!114 &7897311803840011227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335939698275037228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e5a9ce90529d347a349455bdf08af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreZone
+  alsoCountByPosition: 1
+  showLog: 1
