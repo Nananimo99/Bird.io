@@ -207,7 +207,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -523,7 +524,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -824,7 +826,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -1220,7 +1223,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -1287,7 +1291,8 @@ PrefabInstance:
       value: ForkTop7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -1544,7 +1549,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -1837,7 +1843,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -1960,7 +1967,8 @@ PrefabInstance:
       value: ForkTop6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -2326,7 +2334,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -2508,11 +2517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8798faa6f605da640830f62c80e3cfdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bird
-  forwardSpeed: 3
-  flapForce: 6
+  forwardSpeed: 2.5
+  flapForce: 4
   rotateSpeed: 8
   maxUpAngle: 25
-  maxDownAngle: -70
+  maxDownAngle: -90
   idleSpeed: 3
   idleHeight: 0.25
   deadlyTag: Obstacle
@@ -2692,7 +2701,8 @@ PrefabInstance:
       value: Fork 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -2792,7 +2802,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -2858,7 +2869,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -3425,7 +3437,7 @@ Transform:
   m_GameObject: {fileID: 2009825697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.38, y: 4.72, z: 0.57999945}
+  m_LocalPosition: {x: -0.38, y: 8.8, z: 0.57999945}
   m_LocalScale: {x: 24.895391, y: 1, z: 9.9132}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3573,7 +3585,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
@@ -3639,7 +3652,8 @@ PrefabInstance:
       value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5252340109741432744, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56c3f11c971e3e1498304f7fee35ae55, type: 3}
