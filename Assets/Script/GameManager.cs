@@ -28,18 +28,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Debug.LogWarning(
-                "GameManager: duplicate found on " +
-                gameObject.name +
-                ", destroying it."
-            );
-
-            Destroy(gameObject);
-            return;
-        }
-
+        // บังคับให้ GameManager ของ Scene ปัจจุบันเป็น instance หลักเสมอ
         instance = this;
     }
 
@@ -117,6 +106,9 @@ public class GameManager : MonoBehaviour
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
+
+        // หยุดเกม/การเคลื่อนที่ทั้งหมดทันทีที่ชน
+        Time.timeScale = 0f;
     }
 
     // =========================
@@ -161,7 +153,6 @@ public class GameManager : MonoBehaviour
     // =========================
     public void BackToMainMenu()
     {
-        // ต้องคืนเวลาให้เป็นปกติก่อนเปลี่ยน Scene
         Time.timeScale = 1f;
         isPaused = false;
 
@@ -173,7 +164,6 @@ public class GameManager : MonoBehaviour
     // =========================
     public void Restart()
     {
-        // ต้องคืนเวลาให้เป็นปกติก่อนโหลดใหม่
         Time.timeScale = 1f;
         isPaused = false;
 
@@ -191,4 +181,3 @@ public class GameManager : MonoBehaviour
             scoreText.text = score.ToString();
     }
 }
-

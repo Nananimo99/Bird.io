@@ -20,16 +20,13 @@ public class Bird : MonoBehaviour
 
     [Header("Death")]
     public string deadlyTag = "Obstacle";
-    public bool dieOnAnything = false;
+    public bool dieOnAnything = true; // ปรับเป็น true เพื่อให้ชนวัตถุใดๆ ก็ตามแล้วแพ้ทันที
     public bool showCollisionLog = true;
 
     private Rigidbody rb;
     private bool isAlive = true;
     private float startY;
 
-
-
-  
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -49,7 +46,7 @@ public class Bird : MonoBehaviour
     {
         if (!isAlive) return;
 
-        if (!GameManager.instance.isPlaying)
+        if (GameManager.instance != null && !GameManager.instance.isPlaying)
         {
             Idle();
             if (FlapPressed()) StartGame();
@@ -63,7 +60,7 @@ public class Bird : MonoBehaviour
     void FixedUpdate()
     {
         if (!isAlive) return;
-        if (!GameManager.instance.isPlaying) return;
+        if (GameManager.instance != null && !GameManager.instance.isPlaying) return;
 
         Vector3 v = rb.linearVelocity;
         v.x = forwardSpeed;
@@ -90,7 +87,10 @@ public class Bird : MonoBehaviour
     {
         rb.isKinematic = false;
         rb.useGravity = true;
-        GameManager.instance.StartGame();
+
+        if (GameManager.instance != null)
+            GameManager.instance.StartGame();
+
         Flap();
     }
 
@@ -109,6 +109,7 @@ public class Bird : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, target, Time.deltaTime * rotateSpeed);
     }
 
+    // ตรวจการชนแบบ Collider ปกติ
     void OnCollisionEnter(Collision collision)
     {
         if (!isAlive) return;
@@ -120,9 +121,28 @@ public class Bird : MonoBehaviour
         Die();
     }
 
+    // ตรวจการชนแบบ Is Trigger
+    void OnTriggerEnter(Collider other)
+    {
+        if (!isAlive) return;
+
+        // ถ้าสิ่งที่ชนคือโซนเพิ่มคะแนน ให้ข้ามไป ไม่สั่งแพ้
+        if (other.gameObject.CompareTag("Score") || other.gameObject.name.Contains("Score")) return;
+
+        if (showCollisionLog) Debug.Log("BIRD TRIGGER: " + other.gameObject.name);
+
+        if (!dieOnAnything && !other.gameObject.CompareTag(deadlyTag)) return;
+
+        Die();
+    }
+
     void Die()
     {
         isAlive = false;
-        GameManager.instance.GameOver();
+
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.GameOver();
+        }
     }
 }
