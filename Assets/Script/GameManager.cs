@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject readyPanel;
     public GameObject gameOverPanel;
+    public GameObject winPanel; // หน้าจอชนะ
 
     [Header("Pause UI")]
     public GameObject button1; // กลับ MainMenu
@@ -28,13 +29,11 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // บังคับให้ GameManager ของ Scene ปัจจุบันเป็น instance หลักเสมอ
         instance = this;
     }
 
     void Start()
     {
-        // ป้องกันกรณี Scene ก่อนหน้าถูกหยุดไว้
         Time.timeScale = 1f;
 
         isPlaying = false;
@@ -51,7 +50,9 @@ public class GameManager : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
 
-        // ซ่อนปุ่ม 1 และ 2 ตอนเริ่มเกม
+        if (winPanel != null)
+            winPanel.SetActive(false);
+
         if (button1 != null)
             button1.SetActive(false);
 
@@ -72,9 +73,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // =========================
-    // START GAME
-    // =========================
     public void StartGame()
     {
         isPlaying = true;
@@ -83,9 +81,6 @@ public class GameManager : MonoBehaviour
             readyPanel.SetActive(false);
     }
 
-    // =========================
-    // SCORE
-    // =========================
     public void AddScore()
     {
         score++;
@@ -96,9 +91,6 @@ public class GameManager : MonoBehaviour
         UpdateScoreText();
     }
 
-    // =========================
-    // GAME OVER
-    // =========================
     public void GameOver()
     {
         isPlaying = false;
@@ -107,50 +99,49 @@ public class GameManager : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
 
-        // หยุดเกม/การเคลื่อนที่ทั้งหมดทันทีที่ชน
         Time.timeScale = 0f;
     }
 
     // =========================
-    // STOP / RESUME
+    // GAME WIN (ฟังก์ชันชนะ)
     // =========================
+    public void GameWin()
+    {
+        isPlaying = false;
+        Time.timeScale = 0f; // หยุดเกมทันที
+
+        if (winPanel != null)
+            winPanel.SetActive(true);
+
+        Debug.Log("YOU WIN!");
+    }
+
     public void StopGame()
     {
         if (!isPaused)
         {
-            // หยุดเกม
             isPaused = true;
             Time.timeScale = 0f;
 
-            // แสดงปุ่ม 1 และ 2
             if (button1 != null)
                 button1.SetActive(true);
 
             if (button2 != null)
                 button2.SetActive(true);
-
-            Debug.Log("GAME PAUSED");
         }
         else
         {
-            // เล่นต่อ
             isPaused = false;
             Time.timeScale = 1f;
 
-            // ซ่อนปุ่ม 1 และ 2
             if (button1 != null)
                 button1.SetActive(false);
 
             if (button2 != null)
                 button2.SetActive(false);
-
-            Debug.Log("GAME RESUMED");
         }
     }
 
-    // =========================
-    // กลับ MainMenu
-    // =========================
     public void BackToMainMenu()
     {
         Time.timeScale = 1f;
@@ -159,9 +150,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    // =========================
-    // RESTART
-    // =========================
     public void Restart()
     {
         Time.timeScale = 1f;
@@ -172,9 +160,6 @@ public class GameManager : MonoBehaviour
         );
     }
 
-    // =========================
-    // UPDATE SCORE TEXT
-    // =========================
     void UpdateScoreText()
     {
         if (scoreText != null)

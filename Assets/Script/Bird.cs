@@ -20,7 +20,7 @@ public class Bird : MonoBehaviour
 
     [Header("Death")]
     public string deadlyTag = "Obstacle";
-    public bool dieOnAnything = true; // ปรับเป็น true เพื่อให้ชนวัตถุใดๆ ก็ตามแล้วแพ้ทันที
+    public bool dieOnAnything = true;
     public bool showCollisionLog = true;
 
     private Rigidbody rb;
@@ -109,10 +109,19 @@ public class Bird : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, target, Time.deltaTime * rotateSpeed);
     }
 
-    // ตรวจการชนแบบ Collider ปกติ
     void OnCollisionEnter(Collision collision)
     {
         if (!isAlive) return;
+
+        // เช็กว่าชนจาน (Tag = Finish หรือชื่อมีคำว่า Plate/Dish/Bowl)
+        if (collision.gameObject.CompareTag("Finish") ||
+            collision.gameObject.name.ToLower().Contains("plate") ||
+            collision.gameObject.name.ToLower().Contains("bowl"))
+        {
+            if (GameManager.instance != null)
+                GameManager.instance.GameWin();
+            return;
+        }
 
         if (showCollisionLog) Debug.Log("BIRD HIT: " + collision.gameObject.name);
 
@@ -121,13 +130,21 @@ public class Bird : MonoBehaviour
         Die();
     }
 
-    // ตรวจการชนแบบ Is Trigger
     void OnTriggerEnter(Collider other)
     {
         if (!isAlive) return;
 
-        // ถ้าสิ่งที่ชนคือโซนเพิ่มคะแนน ให้ข้ามไป ไม่สั่งแพ้
-        if (other.gameObject.CompareTag("Score") || other.gameObject.name.Contains("Score")) return;
+        // เช็กว่าชนจานแบบ Trigger
+        if (other.gameObject.CompareTag("Finish") ||
+            other.gameObject.name.ToLower().Contains("plate") ||
+            other.gameObject.name.ToLower().Contains("bowl"))
+        {
+            if (GameManager.instance != null)
+                GameManager.instance.GameWin();
+            return;
+        }
+
+        if (other.gameObject.CompareTag("Score") || other.gameObject.name.Contains("ScoreZone")) return;
 
         if (showCollisionLog) Debug.Log("BIRD TRIGGER: " + other.gameObject.name);
 
