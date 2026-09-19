@@ -3,7 +3,14 @@ using UnityEngine.UI;
 
 public class VolumeSlider : MonoBehaviour
 {
+    public enum VolumeType
+    {
+        BGM,
+        SFX
+    }
+
     [SerializeField] private Slider slider;
+    [SerializeField] private VolumeType volumeType;
 
     private void Start()
     {
@@ -12,21 +19,40 @@ public class VolumeSlider : MonoBehaviour
             slider = GetComponent<Slider>();
         }
 
-        if (AudioManager.instance != null)
+        if (AudioManager.instance == null)
         {
-            float volume = AudioManager.instance.LoadCurrentVolumes();
-
-            slider.SetValueWithoutNotify(volume);
-
-            slider.onValueChanged.AddListener(ChangeVolume);
+            return;
         }
+
+        float volume;
+
+        if (volumeType == VolumeType.BGM)
+        {
+            volume = AudioManager.instance.LoadBGMVolume();
+        }
+        else
+        {
+            volume = AudioManager.instance.LoadSFXVolume();
+        }
+
+        slider.SetValueWithoutNotify(volume);
+        slider.onValueChanged.AddListener(ChangeVolume);
     }
 
     private void ChangeVolume(float value)
     {
-        if (AudioManager.instance != null)
+        if (AudioManager.instance == null)
         {
-            AudioManager.instance.AdjustMasterVolume(value);
+            return;
+        }
+
+        if (volumeType == VolumeType.BGM)
+        {
+            AudioManager.instance.AdjustBGMVolume(value);
+        }
+        else
+        {
+            AudioManager.instance.AdjustSFXVolume(value);
         }
     }
 

@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,18 +11,24 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioClip[] bgm;
 
-    [Header("SFX (เอาไว้ทำภายหลัง)")]
-    [SerializeField] private AudioSource[] sfx;
+    [Header("SFX")]
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip[] sfx;
 
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer mixer;
 
     private const string MASTER_VOLUME = "MasterVolume";
-    private const string VOLUME_KEY = "MasterVolumeValue";
 
+    private const string MASTER_KEY = "MasterVolumeValue";
+    private const string BGM_KEY = "BGMVolumeValue";
+    private const string SFX_KEY = "SFXVolumeValue";
+
+    // =========================
+    // AWAKE
+    // =========================
     private void Awake()
     {
-        // กัน AudioManager ซ้ำ
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -30,7 +38,16 @@ public class AudioManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // โหลดเสียงที่บันทึกไว้
         LoadCurrentVolumes();
+        LoadBGMVolume();
+        LoadSFXVolume();
+
+        // ตรวจปุ่มทุกครั้งที่เปลี่ยน Scene
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // ใส่เสียงให้ปุ่มใน Scene แรก
+        AddButtonSounds();
     }
 
     // =========================
@@ -40,13 +57,13 @@ public class AudioManager : MonoBehaviour
     {
         if (bgmSource == null)
         {
-            Debug.LogError("ยังไม่ได้ใส่ BGM AudioSource ใน AudioManager");
+            Debug.LogError("ยังไม่ได้ใส่ BGM AudioSource");
             return;
         }
 
         if (bgm == null || bgm.Length == 0)
         {
-            Debug.LogError("ยังไม่ได้ใส่เพลงใน BGM");
+            Debug.LogError("ยังไม่ได้ใส่เพลง BGM");
             return;
         }
 
@@ -56,7 +73,13 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // ถ้าเป็นเพลงเดิม ไม่ต้องเล่นซ้ำ
+        if (bgm[index] == null)
+        {
+            Debug.LogError("BGM ช่อง " + index + " ยังไม่มีเพลง");
+            return;
+        }
+
+        // ถ้าเป็นเพลงเดิมและกำลังเล่นอยู่ ไม่ต้องเริ่มใหม่
         if (bgmSource.clip == bgm[index] && bgmSource.isPlaying)
         {
             return;
@@ -65,8 +88,6 @@ public class AudioManager : MonoBehaviour
         bgmSource.clip = bgm[index];
         bgmSource.loop = true;
         bgmSource.Play();
-
-        Debug.Log("เล่น BGM เพลงที่ : " + index);
     }
 
     // =========================
@@ -74,82 +95,71 @@ public class AudioManager : MonoBehaviour
     // =========================
     public void PlaySFX(int index)
     {
+        if (sfxSource == null)
+        {
+            Debug.LogWarning("ยังไม่ได้ใส่ SFX AudioSource");
+            return;
+        }
+
         if (sfx == null || sfx.Length == 0)
         {
-            Debug.LogWarning("ยังไม่ได้ตั้งค่า SFX");
+            Debug.LogWarning("ยังไม่ได้ใส่เสียง SFX");
             return;
         }
 
         if (index < 0 || index >= sfx.Length)
         {
-            Debug.LogError("SFX index ไม่ถูกต้อง : " + index);
+            Debug.LogWarning("SFX index ไม่ถูกต้อง : " + index);
             return;
         }
 
-        if (sfx[index] != null)
+        if (sfx[index] == null)
         {
-            sfx[index].Play();
+            Debug.LogWarning("SFX ช่อง " + index + " ยังไม่มีเสียง");
+            return;
         }
+
+        sfxSource.PlayOneShot(sfx[index]);
     }
 
     // =========================
-    // VOLUME
+    // MASTER VOLUME
     // =========================
     public void AdjustMasterVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
-        // ถ้ามี Audio Mixer
         if (mixer != null)
         {
-            float db;
-
-            if (volume <= 0.0001f)
-            {
-                db = -80f;
-            }
-            else
-            {
-                db = Mathf.Log10(volume) * 20f;
-            }
+            float db = volume <= 0.0001f
+                ? -80f
+                : Mathf.Log10(volume) * 20f;
 
             bool success = mixer.SetFloat(MASTER_VOLUME, db);
 
             if (!success)
             {
-                Debug.LogWarning("หา Exposed Parameter ชื่อ MasterVolume ไม่เจอ");
                 AudioListener.volume = volume;
             }
         }
         else
         {
-            // ถ้าไม่ได้ใช้ Mixer
             AudioListener.volume = volume;
         }
 
-        PlayerPrefs.SetFloat(VOLUME_KEY, volume);
+        PlayerPrefs.SetFloat(MASTER_KEY, volume);
         PlayerPrefs.Save();
     }
 
-    // =========================
-    // LOAD VOLUME
-    // =========================
     public float LoadCurrentVolumes()
     {
-        float volume = PlayerPrefs.GetFloat(VOLUME_KEY, 1f);
+        float volume = PlayerPrefs.GetFloat(MASTER_KEY, 1f);
 
         if (mixer != null)
         {
-            float db;
-
-            if (volume <= 0.0001f)
-            {
-                db = -80f;
-            }
-            else
-            {
-                db = Mathf.Log10(volume) * 20f;
-            }
+            float db = volume <= 0.0001f
+                ? -80f
+                : Mathf.Log10(volume) * 20f;
 
             bool success = mixer.SetFloat(MASTER_VOLUME, db);
 
@@ -164,5 +174,105 @@ public class AudioManager : MonoBehaviour
         }
 
         return volume;
+    }
+
+    // =========================
+    // BGM VOLUME
+    // =========================
+    public void AdjustBGMVolume(float volume)
+    {
+        volume = Mathf.Clamp01(volume);
+
+        if (bgmSource != null)
+        {
+            bgmSource.volume = volume;
+        }
+
+        PlayerPrefs.SetFloat(BGM_KEY, volume);
+        PlayerPrefs.Save();
+    }
+
+    public float LoadBGMVolume()
+    {
+        float volume = PlayerPrefs.GetFloat(BGM_KEY, 1f);
+
+        if (bgmSource != null)
+        {
+            bgmSource.volume = volume;
+        }
+
+        return volume;
+    }
+
+    // =========================
+    // SFX VOLUME
+    // =========================
+    public void AdjustSFXVolume(float volume)
+    {
+        volume = Mathf.Clamp01(volume);
+
+        if (sfxSource != null)
+        {
+            sfxSource.volume = volume;
+        }
+
+        PlayerPrefs.SetFloat(SFX_KEY, volume);
+        PlayerPrefs.Save();
+    }
+
+    public float LoadSFXVolume()
+    {
+        float volume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
+
+        if (sfxSource != null)
+        {
+            sfxSource.volume = volume;
+        }
+
+        return volume;
+    }
+
+    // =========================
+    // BUTTON SOUND
+    // =========================
+    private void AddButtonSounds()
+    {
+        Button[] buttons = FindObjectsByType<Button>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        foreach (Button button in buttons)
+        {
+            button.onClick.RemoveListener(PlayButtonSound);
+            button.onClick.AddListener(PlayButtonSound);
+        }
+    }
+
+    // =========================
+    // SCENE LOADED
+    // =========================
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        AddButtonSounds();
+    }
+
+    // =========================
+    // BUTTON CLICK SOUND
+    // =========================
+    private void PlayButtonSound()
+    {
+        PlaySFX(0);
+    }
+
+    // =========================
+    // ON DESTROY
+    // =========================
+    private void OnDestroy()
+    {
+        if (instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
 }

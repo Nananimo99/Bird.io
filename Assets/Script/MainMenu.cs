@@ -6,6 +6,7 @@ public class MainMenu : MonoBehaviour
     // กด Easy Mode
     public void EasyMode()
     {
+        
         SceneManager.LoadScene("EasyMode");
     }
 
