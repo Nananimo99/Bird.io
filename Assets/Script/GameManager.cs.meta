@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: f2a4174cc1c4d874281bd94bdd04055f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - scoreText: {instanceID: 0}
+  - readyPanel: {instanceID: 0}
+  - gameOverPanel: {instanceID: 0}
+  - winPanel: {instanceID: 0}
+  - button1: {instanceID: 0}
+  - button2: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
