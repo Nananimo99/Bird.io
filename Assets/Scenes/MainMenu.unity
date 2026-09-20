@@ -1199,6 +1199,7 @@ MonoBehaviour:
   sfx:
   - {fileID: 8300000, guid: 6c0ba81994795684fb99f9e85d081571, type: 3}
   - {fileID: 8300000, guid: aa1def49b037ac04fb899c9341f09e8b, type: 3}
+  - {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
   mixer: {fileID: 24100000, guid: cfc50b5a087b5e4419a96b4020c946a0, type: 2}
 --- !u!4 &809558208
 Transform:

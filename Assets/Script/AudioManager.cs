@@ -24,9 +24,6 @@ public class AudioManager : MonoBehaviour
     private const string BGM_KEY = "BGMVolumeValue";
     private const string SFX_KEY = "SFXVolumeValue";
 
-    // =========================
-    // AWAKE
-    // =========================
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -38,21 +35,15 @@ public class AudioManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // โหลดเสียงที่บันทึกไว้
         LoadCurrentVolumes();
         LoadBGMVolume();
         LoadSFXVolume();
 
-        // ตรวจปุ่มทุกครั้งที่เปลี่ยน Scene
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // ใส่เสียงให้ปุ่มใน Scene แรก
         AddButtonSounds();
     }
 
-    // =========================
-    // BGM
-    // =========================
     public void PlayBGM(int index)
     {
         if (bgmSource == null)
@@ -79,7 +70,6 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // ถ้าเป็นเพลงเดิมและกำลังเล่นอยู่ ไม่ต้องเริ่มใหม่
         if (bgmSource.clip == bgm[index] && bgmSource.isPlaying)
         {
             return;
@@ -90,9 +80,6 @@ public class AudioManager : MonoBehaviour
         bgmSource.Play();
     }
 
-    // =========================
-    // SFX
-    // =========================
     public void PlaySFX(int index)
     {
         if (sfxSource == null)
@@ -122,25 +109,30 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(sfx[index]);
     }
 
-    // =========================
-    // MASTER VOLUME
-    // =========================
+    public void PlaySFX(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip == null) return;
+
+        if (sfxSource == null)
+        {
+            Debug.LogWarning("ยังไม่ได้ใส่ SFX AudioSource");
+            return;
+        }
+
+        sfxSource.PlayOneShot(clip, volumeScale);
+    }
+
     public void AdjustMasterVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
         if (mixer != null)
         {
-            float db = volume <= 0.0001f
-                ? -80f
-                : Mathf.Log10(volume) * 20f;
+            float db = volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20f;
 
             bool success = mixer.SetFloat(MASTER_VOLUME, db);
 
-            if (!success)
-            {
-                AudioListener.volume = volume;
-            }
+            if (!success) AudioListener.volume = volume;
         }
         else
         {
@@ -157,16 +149,11 @@ public class AudioManager : MonoBehaviour
 
         if (mixer != null)
         {
-            float db = volume <= 0.0001f
-                ? -80f
-                : Mathf.Log10(volume) * 20f;
+            float db = volume <= 0.0001f ? -80f : Mathf.Log10(volume) * 20f;
 
             bool success = mixer.SetFloat(MASTER_VOLUME, db);
 
-            if (!success)
-            {
-                AudioListener.volume = volume;
-            }
+            if (!success) AudioListener.volume = volume;
         }
         else
         {
@@ -176,17 +163,11 @@ public class AudioManager : MonoBehaviour
         return volume;
     }
 
-    // =========================
-    // BGM VOLUME
-    // =========================
     public void AdjustBGMVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
-        if (bgmSource != null)
-        {
-            bgmSource.volume = volume;
-        }
+        if (bgmSource != null) bgmSource.volume = volume;
 
         PlayerPrefs.SetFloat(BGM_KEY, volume);
         PlayerPrefs.Save();
@@ -196,25 +177,16 @@ public class AudioManager : MonoBehaviour
     {
         float volume = PlayerPrefs.GetFloat(BGM_KEY, 1f);
 
-        if (bgmSource != null)
-        {
-            bgmSource.volume = volume;
-        }
+        if (bgmSource != null) bgmSource.volume = volume;
 
         return volume;
     }
 
-    // =========================
-    // SFX VOLUME
-    // =========================
     public void AdjustSFXVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
-        if (sfxSource != null)
-        {
-            sfxSource.volume = volume;
-        }
+        if (sfxSource != null) sfxSource.volume = volume;
 
         PlayerPrefs.SetFloat(SFX_KEY, volume);
         PlayerPrefs.Save();
@@ -224,17 +196,11 @@ public class AudioManager : MonoBehaviour
     {
         float volume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
 
-        if (sfxSource != null)
-        {
-            sfxSource.volume = volume;
-        }
+        if (sfxSource != null) sfxSource.volume = volume;
 
         return volume;
     }
 
-    // =========================
-    // BUTTON SOUND
-    // =========================
     private void AddButtonSounds()
     {
         Button[] buttons = FindObjectsByType<Button>(
@@ -249,25 +215,16 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // =========================
-    // SCENE LOADED
-    // =========================
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         AddButtonSounds();
     }
 
-    // =========================
-    // BUTTON CLICK SOUND
-    // =========================
     private void PlayButtonSound()
     {
         PlaySFX(0);
     }
 
-    // =========================
-    // ON DESTROY
-    // =========================
     private void OnDestroy()
     {
         if (instance == this)

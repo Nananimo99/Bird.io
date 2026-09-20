@@ -18,9 +18,15 @@ public class Bird : MonoBehaviour
     public float idleSpeed = 3f;
     public float idleHeight = 0.25f;
 
+    [Header("Audio")]
+    public AudioSource sfxSource;
+    public AudioClip flapClip;
+    public AudioClip dieClip;
+    [Range(0f, 1f)] public float sfxVolume = 1f;
+
     [Header("Death")]
     public string deadlyTag = "Obstacle";
-    public bool dieOnAnything = true;
+    public bool dieOnAnything = false;
     public bool showCollisionLog = true;
 
     private Rigidbody rb;
@@ -33,6 +39,8 @@ public class Bird : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        if (sfxSource == null) sfxSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -40,13 +48,18 @@ public class Bird : MonoBehaviour
         startY = transform.position.y;
         rb.isKinematic = true;
         rb.useGravity = false;
+
+        if (AudioManager.instance == null && sfxSource == null)
+        {
+            Debug.LogWarning("Bird: no AudioManager and no AudioSource, sounds will not play.");
+        }
     }
 
     void Update()
     {
         if (!isAlive) return;
 
-        if (GameManager.instance != null && !GameManager.instance.isPlaying)
+        if (!GameManager.instance.isPlaying)
         {
             Idle();
             if (FlapPressed()) StartGame();
@@ -60,7 +73,7 @@ public class Bird : MonoBehaviour
     void FixedUpdate()
     {
         if (!isAlive) return;
-        if (GameManager.instance != null && !GameManager.instance.isPlaying) return;
+        if (!GameManager.instance.isPlaying) return;
 
         Vector3 v = rb.linearVelocity;
         v.x = forwardSpeed;
@@ -87,10 +100,7 @@ public class Bird : MonoBehaviour
     {
         rb.isKinematic = false;
         rb.useGravity = true;
-
-        if (GameManager.instance != null)
-            GameManager.instance.StartGame();
-
+        GameManager.instance.StartGame();
         Flap();
     }
 
@@ -99,6 +109,23 @@ public class Bird : MonoBehaviour
         Vector3 v = rb.linearVelocity;
         v.y = flapForce;
         rb.linearVelocity = v;
+
+        PlaySfx(flapClip);
+    }
+
+    void PlaySfx(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlaySFX(clip, sfxVolume);
+            return;
+        }
+
+        if (sfxSource == null) return;
+
+        sfxSource.PlayOneShot(clip, sfxVolume);
     }
 
     void ApplyRotation()
@@ -113,16 +140,6 @@ public class Bird : MonoBehaviour
     {
         if (!isAlive) return;
 
-        // เช็กว่าชนจาน (Tag = Finish หรือชื่อมีคำว่า Plate/Dish/Bowl)
-        if (collision.gameObject.CompareTag("Finish") ||
-            collision.gameObject.name.ToLower().Contains("plate") ||
-            collision.gameObject.name.ToLower().Contains("bowl"))
-        {
-            if (GameManager.instance != null)
-                GameManager.instance.GameWin();
-            return;
-        }
-
         if (showCollisionLog) Debug.Log("BIRD HIT: " + collision.gameObject.name);
 
         if (!dieOnAnything && !collision.gameObject.CompareTag(deadlyTag)) return;
@@ -130,36 +147,10 @@ public class Bird : MonoBehaviour
         Die();
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (!isAlive) return;
-
-        // เช็กว่าชนจานแบบ Trigger
-        if (other.gameObject.CompareTag("Finish") ||
-            other.gameObject.name.ToLower().Contains("plate") ||
-            other.gameObject.name.ToLower().Contains("bowl"))
-        {
-            if (GameManager.instance != null)
-                GameManager.instance.GameWin();
-            return;
-        }
-
-        if (other.gameObject.CompareTag("Score") || other.gameObject.name.Contains("ScoreZone")) return;
-
-        if (showCollisionLog) Debug.Log("BIRD TRIGGER: " + other.gameObject.name);
-
-        if (!dieOnAnything && !other.gameObject.CompareTag(deadlyTag)) return;
-
-        Die();
-    }
-
     void Die()
     {
         isAlive = false;
-
-        if (GameManager.instance != null)
-        {
-            GameManager.instance.GameOver();
-        }
+        PlaySfx(dieClip);
+        GameManager.instance.GameOver();
     }
 }
