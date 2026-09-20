@@ -1416,7 +1416,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2016359363}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: BackToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2190,7 +2190,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -236, y: 17.057663}
+  m_AnchoredPosition: {x: -364, y: 89.05769}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &608849970
@@ -2368,7 +2368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -4224,7 +4224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4, y: 127}
+  m_AnchoredPosition: {x: -4, y: 191}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1185179594
@@ -4747,7 +4747,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -236, y: 61.122375}
+  m_AnchoredPosition: {x: -364, y: 133.1224}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1433033383
@@ -5696,7 +5696,9 @@ MonoBehaviour:
   sfxSource: {fileID: 0}
   flapClip: {fileID: 8300000, guid: aa1def49b037ac04fb899c9341f09e8b, type: 3}
   dieClip: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
+  winClip: {fileID: 8300000, guid: 01cac3603af07aa4ea08a5dabd6f100d, type: 3}
   sfxVolume: 1
+  goalTag: Goal
   deadlyTag: Obstacle
   dieOnAnything: 1
   showCollisionLog: 1
@@ -6084,7 +6086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9023293678204716511, guid: 038d58a0b7d23aa408227e14a80ec6b7, type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Goal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6300,7 +6302,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7, y: 125}
+  m_AnchoredPosition: {x: -7, y: 189}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1916170772
@@ -6322,6 +6324,7 @@ MonoBehaviour:
   button1: {fileID: 1424779218}
   button2: {fileID: 570889973}
   isPlaying: 0
+  winScore: 0
   showScoreLog: 1
 --- !u!114 &1916170773
 MonoBehaviour:
@@ -6467,7 +6470,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -236, y: 114}
+  m_AnchoredPosition: {x: -364, y: 186}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1943297697
@@ -6736,11 +6739,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1487082642280886695, guid: 415d092d82c78bd418fbcc202d269891, type: 3}
 --- !u!1 &2009825697
@@ -6897,6 +6900,7 @@ MonoBehaviour:
   button1: {fileID: 1424779218}
   button2: {fileID: 570889973}
   isPlaying: 1
+  winScore: 0
   showScoreLog: 1
 --- !u!4 &2016359364
 Transform:

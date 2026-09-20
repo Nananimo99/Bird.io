@@ -11,14 +11,17 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject readyPanel;
     public GameObject gameOverPanel;
-    public GameObject winPanel; // หน้าจอชนะ
+    public GameObject winPanel;
 
     [Header("Pause UI")]
-    public GameObject button1; // กลับ MainMenu
-    public GameObject button2; // เริ่มใหม่
+    public GameObject button1;
+    public GameObject button2;
 
     [Header("State")]
     public bool isPlaying = false;
+
+    [Header("Win Condition")]
+    public int winScore = 0;
 
     [Header("Debug")]
     public bool showScoreLog = true;
@@ -89,10 +92,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("SCORE = " + score);
 
         UpdateScoreText();
+
+        if (winScore > 0 && score >= winScore) GameWin();
     }
 
     public void GameOver()
     {
+        if (isGameOver) return;
+
         isPlaying = false;
         isGameOver = true;
 
@@ -102,18 +109,19 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    // =========================
-    // GAME WIN (ฟังก์ชันชนะ)
-    // =========================
     public void GameWin()
     {
+        if (isGameOver) return;
+
         isPlaying = false;
-        Time.timeScale = 0f; // หยุดเกมทันที
+        isGameOver = true;
 
         if (winPanel != null)
             winPanel.SetActive(true);
 
         Debug.Log("YOU WIN!");
+
+        Time.timeScale = 0f;
     }
 
     public void StopGame()

@@ -22,7 +22,11 @@ public class Bird : MonoBehaviour
     public AudioSource sfxSource;
     public AudioClip flapClip;
     public AudioClip dieClip;
+    public AudioClip winClip;
     [Range(0f, 1f)] public float sfxVolume = 1f;
+
+    [Header("Goal")]
+    public string goalTag = "Goal";
 
     [Header("Death")]
     public string deadlyTag = "Obstacle";
@@ -140,11 +144,43 @@ public class Bird : MonoBehaviour
     {
         if (!isAlive) return;
 
-        if (showCollisionLog) Debug.Log("BIRD HIT: " + collision.gameObject.name);
+        GameObject obj = collision.gameObject;
 
-        if (!dieOnAnything && !collision.gameObject.CompareTag(deadlyTag)) return;
+        if (showCollisionLog)
+            Debug.Log("BIRD HIT: " + obj.name + "  |  tag = " + obj.tag);
+
+        if (HasTagInParents(obj, goalTag))
+        {
+            Win();
+            return;
+        }
+
+        if (!dieOnAnything && !HasTagInParents(obj, deadlyTag)) return;
 
         Die();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!isAlive) return;
+        if (!HasTagInParents(other.gameObject, goalTag)) return;
+
+        Win();
+    }
+
+    bool HasTagInParents(GameObject obj, string tag)
+    {
+        if (string.IsNullOrEmpty(tag)) return false;
+
+        Transform t = obj.transform;
+
+        while (t != null)
+        {
+            if (t.CompareTag(tag)) return true;
+            t = t.parent;
+        }
+
+        return false;
     }
 
     void Die()
@@ -152,5 +188,12 @@ public class Bird : MonoBehaviour
         isAlive = false;
         PlaySfx(dieClip);
         GameManager.instance.GameOver();
+    }
+
+    void Win()
+    {
+        isAlive = false;
+        PlaySfx(winClip);
+        GameManager.instance.GameWin();
     }
 }
