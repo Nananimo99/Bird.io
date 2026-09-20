@@ -831,10 +831,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 1808779338}
-  offsetX: 1.6
-  offsetY: 0
+  offsetX: 3
+  offsetY: 0.15
   offsetZ: -5
-  smoothSpeed: 2
+  smoothSpeed: 5
   followY: 1
 --- !u!4 &344683922 stripped
 Transform:
@@ -1538,10 +1538,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 1808779338}
-  offsetX: 4.5
+  offsetX: 5
   offsetY: 0
-  offsetZ: 3.44
-  smoothSpeed: 3
+  offsetZ: 4
+  smoothSpeed: 5
   followY: 1
 --- !u!212 &602450774
 SpriteRenderer:
@@ -2523,8 +2523,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Space to Start
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e831defcb13db1242be293476938f1f7, type: 2}
+  m_sharedMaterial: {fileID: -7063277266593061216, guid: e831defcb13db1242be293476938f1f7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4464,7 +4464,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 0a42919b80e59ff4f99880f452ceab8b, type: 3}
     m_FontSize: 60
     m_FontStyle: 0
     m_BestFit: 0
